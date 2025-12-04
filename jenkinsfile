@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone') {
+            steps {
+                echo 'Code récupéré depuis GitHub'
+            }
+        }
+
+        stage('Install') {
+            steps {
+                echo 'Installation des dépendances'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Build du projet'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Tests du projet'
+            }
+        }
+    }
+}
