@@ -1,29 +1,51 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven'
+        jdk 'JDK17'
+    }
+
     stages {
-        stage('Clone') {
+
+        stage('Checkout') {
             steps {
-                echo 'Code récupéré depuis GitHub'
+                checkout scm
             }
         }
 
-        stage('Install') {
+        stage('Clean') {
             steps {
-                echo 'Installation des dépendances'
+                sh 'mvn clean'
             }
         }
 
         stage('Build') {
             steps {
-                echo 'Build du projet'
+                sh 'mvn compile'
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Tests du projet'
+                sh 'mvn test'
+            }
+        }
+
+        stage('Package') {
+            steps {
+                sh 'mvn package'
             }
         }
     }
+
+    post {
+        success {
+            echo 'Build terminé avec succès ✅'
+        }
+        failure {
+            echo 'Build échoué ❌'
+        }
+    }
 }
+
