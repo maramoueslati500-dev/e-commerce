@@ -6,28 +6,47 @@ pipeline {
         jdk 'JDK17'
     }
 
+    environment {
+        scannerHome = tool 'SonarQube Scanner'
+        SONAR_TOKEN = 'squ_bc37515d6a0dbd2a378f83df791fd99d98d130e6' // Remplace par ton token
+    }
+
     stages {
         stage('Checkout') {
-            steps {
-                checkout scm
-            }
+            steps { checkout scm }
         }
+
         stage('Clean') {
             steps { sh 'mvn clean' }
         }
+
         stage('Build') {
             steps { sh 'mvn compile' }
         }
+
         stage('Test') {
             steps { sh 'mvn test' }
         }
+
         stage('Package') {
             steps { sh 'mvn package' }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                sh """
+                   ${scannerHome}/bin/sonar-scanner \
+                   -Dsonar.projectKey=ecommerce \
+                   -Dsonar.sources=src \
+                   -Dsonar.host.url=http://localhost:9000 \
+                   -Dsonar.login=${SONAR_TOKEN}
+                """
+            }
         }
     }
 
     post {
-        success { echo 'Build terminé avec succès ✅' }
+        success { echo 'Build + Analyse SonarQube terminés ✅' }
         failure { echo 'Build échoué ❌' }
     }
 }
