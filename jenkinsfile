@@ -10,7 +10,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo 'Récupération du code...'
+                checkout scm
             }
         }
 
