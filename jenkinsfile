@@ -39,7 +39,7 @@ pipeline {
                    -Dsonar.projectKey=ecommerce \
                    -Dsonar.sources=src \
                    -Dsonar.host.url=http://localhost:9000 \
-                   -Dsonar.login=${SONAR_TOKEN}
+                   -Dsonar.login=${squ_bc37515d6a0dbd2a378f83df791fd99d98d130e6}
                 """
             }
         }
